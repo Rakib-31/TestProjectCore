@@ -107,28 +107,31 @@ namespace TestProjectCore.Controllers
             var nationalPark = _mapper.Map<NationalPark>(nationalParkDto);
             if (!_npRepo.UpdateNationalPark(nationalPark))
             {
-                ModelState.AddModelError("", $"Someting went wrong when saving the record {nationalParkDto.Name}");
+                ModelState.AddModelError("", $"Someting went wrong when saving the record {nationalPark.Name}");
                 return StatusCode(404, ModelState);
             }
-            return Ok(nationalPark);
+            return Ok(nationalParkDto);
         }
 
         [HttpDelete]
         public IActionResult DeleteNationalPark(int nationalParkId)
         {
-            if (!_npRepo.NationalParkExists(nationalParkId))
+            var nationalPark = _npRepo.GetNationalPark(nationalParkId);
+
+            if (nationalPark == null)
             {
                 ModelState.AddModelError("", "National park does not exist!");
                 return StatusCode(404, ModelState);
             }
 
-            var nationalPark = _npRepo.GetNationalPark(nationalParkId);
             if (!_npRepo.DeleteNationalPark(nationalPark))
             {
                 ModelState.AddModelError("", $"Someting went wrong when deleting the record {nationalPark.Name}");
                 return StatusCode(404, ModelState);
             }
-            return Ok(nationalPark);
+            var nationalParkDto = _mapper.Map<NationalParkDto>(nationalPark);
+
+            return Ok(nationalParkDto);
         }
     }
 }

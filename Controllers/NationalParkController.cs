@@ -16,7 +16,7 @@ namespace TestProjectCore.Controllers
     [ApiController]
     public class NationalParkController : Controller
     {
-        private INationalParkRepository _npRepo;
+        private readonly INationalParkRepository _npRepo;
         private readonly IMapper _mapper;
 
         public NationalParkController(INationalParkRepository npRepo, IMapper mapper)

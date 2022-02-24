@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestProjectCore.Data;
-using TestProjectCore.Model.Mapper;
+using TestProjectCore.ParkyMapper;
 using TestProjectCore.Repository;
 
 namespace TestProjectCore

@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TestProjectCore.Data;
+using TestProjectCore.Model.Mapper;
 using TestProjectCore.Repository;
 
 namespace TestProjectCore
@@ -31,6 +32,7 @@ namespace TestProjectCore
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<INationalParkRepository, NationalParkRepository>();
+            services.AddAutoMapper(typeof(ParkyMapping));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

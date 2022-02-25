@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TestProjectCore</name>
+    </assembly>
+    <members>
+        <member name="M:TestProjectCore.Controllers.NationalParkController.GetNationalParks">
+            <summary>
+            For getting national park list
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestProjectCore.Controllers.NationalParkController.GetNationalPark(System.Int32)">
+            <summary>
+            For getting national park with nationalParkId
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestProjectCore.Controllers.NationalParkController.NationalParkExist(System.String)">
+            <summary>
+            If any exist with the given name
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestProjectCore.Controllers.NationalParkController.NationalParkExist(System.Int32)">
+            <summary>
+            If any exist with the given id
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestProjectCore.Controllers.NationalParkController.CreateNationalPark(TestProjectCore.Model.DTOs.NationalParkDto)">
+            <summary>
+            Create new national park
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestProjectCore.Controllers.NationalParkController.UpdateNationalPark(TestProjectCore.Model.DTOs.NationalParkDto)">
+            <summary>
+            Update existing national park
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TestProjectCore.Controllers.NationalParkController.DeleteNationalPark(System.Int32)">
+            <summary>
+            Delete existing national park by id
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

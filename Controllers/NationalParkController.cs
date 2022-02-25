@@ -12,9 +12,10 @@ using TestProjectCore.Repository;
 
 namespace TestProjectCore.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
-    public class NationalParkController : Controller
+    [Route("api/[controller]")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public class NationalParkController : ControllerBase
     {
         private readonly INationalParkRepository _npRepo;
         private readonly IMapper _mapper;
@@ -24,8 +25,12 @@ namespace TestProjectCore.Controllers
             _npRepo = npRepo;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// For getting national park list
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(List<NationalParkDto>))]
         public IActionResult GetNationalParks()
         {
             var nationalParkDtoList = new List<NationalParkDto>();
@@ -37,8 +42,14 @@ namespace TestProjectCore.Controllers
             }
             return Ok(nationalParkDtoList);
         }
-
+        /// <summary>
+        /// For getting national park with nationalParkId
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("{nationalParkId:int}", Name = "GetNationalPark")]
+        [ProducesResponseType(200, Type = typeof(NationalParkDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public IActionResult GetNationalPark(int nationalParkId)
         {
             var nationalPark = _npRepo.GetNationalPark(nationalParkId);
@@ -48,8 +59,14 @@ namespace TestProjectCore.Controllers
             }
             return Ok(_mapper.Map<NationalParkDto>(nationalPark));
         }
-
+        /// <summary>
+        /// If any exist with the given name
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public IActionResult NationalParkExist(string name)
         {
             if (!_npRepo.NationalParkExists(name))
@@ -58,8 +75,14 @@ namespace TestProjectCore.Controllers
             }
             return Ok();
         }
-
+        /// <summary>
+        /// If any exist with the given id
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public IActionResult NationalParkExist(int id)
         {
             if (!_npRepo.NationalParkExists(id))
@@ -68,8 +91,15 @@ namespace TestProjectCore.Controllers
             }
             return Ok();
         }
-
+        /// <summary>
+        /// Create new national park
+        /// </summary>
+        /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status302Found)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
         public IActionResult CreateNationalPark(NationalParkDto nationalParkDto)
         {
             if(nationalParkDto == null || !ModelState.IsValid)
@@ -90,8 +120,15 @@ namespace TestProjectCore.Controllers
             }
             return CreatedAtRoute("GetNationalPark", new { nationalParkId = nationalPark.Id }, nationalPark);
         }
-
+        /// <summary>
+        /// Update existing national park
+        /// </summary>
+        /// <returns></returns>
         [HttpPatch]
+        [ProducesResponseType(200, Type=typeof(NationalParkDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
         public IActionResult UpdateNationalPark(NationalParkDto nationalParkDto)
         {
             if (nationalParkDto == null || !ModelState.IsValid)
@@ -108,12 +145,19 @@ namespace TestProjectCore.Controllers
             if (!_npRepo.UpdateNationalPark(nationalPark))
             {
                 ModelState.AddModelError("", $"Someting went wrong when saving the record {nationalPark.Name}");
-                return StatusCode(404, ModelState);
+                return StatusCode(500, ModelState);
             }
             return Ok(nationalParkDto);
         }
-
+        /// <summary>
+        /// Delete existing national park by id
+        /// </summary>
+        /// <returns></returns>
         [HttpDelete]
+        [ProducesResponseType(200, Type = typeof(NationalParkDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
         public IActionResult DeleteNationalPark(int nationalParkId)
         {
             var nationalPark = _npRepo.GetNationalPark(nationalParkId);
@@ -127,7 +171,7 @@ namespace TestProjectCore.Controllers
             if (!_npRepo.DeleteNationalPark(nationalPark))
             {
                 ModelState.AddModelError("", $"Someting went wrong when deleting the record {nationalPark.Name}");
-                return StatusCode(404, ModelState);
+                return StatusCode(500, ModelState);
             }
             var nationalParkDto = _mapper.Map<NationalParkDto>(nationalPark);
 
